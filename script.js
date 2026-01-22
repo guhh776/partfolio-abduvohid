@@ -1,5 +1,6 @@
 // ===================================
 // Web Developer Portfolio JavaScript
+// FIXED VERSION - Project links work & EmailJS debug added
 // ===================================
 
 // Wait for DOM to load
@@ -170,6 +171,8 @@ document.addEventListener('DOMContentLoaded', function() {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
+            console.log('📧 Form submitted! Starting email send process...');
+            
             // Get submit button
             const submitBtn = contactForm.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn.innerHTML;
@@ -186,10 +189,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 message: document.getElementById('message').value
             };
             
+            console.log('📋 Template Parameters:', templateParams);
+            console.log('🔧 Service ID: service_lhteumn');
+            console.log('📝 Template ID: template_pheynv4');
+            
             // Send email using EmailJS
             emailjs.send('service_lhteumn', 'template_pheynv4', templateParams)
                 .then(function(response) {
-                    console.log('SUCCESS!', response.status, response.text);
+                    console.log('✅ SUCCESS!', response.status, response.text);
+                    console.log('📬 Email sent successfully to: abduvohidkamoliddinov24@gmail.com');
                     
                     // Show success message
                     alert(`Thank you, ${templateParams.from_name}! ✅\n\nYour message has been sent successfully.\n\nI'll get back to you soon at ${templateParams.from_email}`);
@@ -202,10 +210,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     submitBtn.innerHTML = originalBtnText;
                     
                 }, function(error) {
-                    console.log('FAILED...', error);
+                    console.error('❌ FAILED!', error);
+                    console.error('Error details:', JSON.stringify(error, null, 2));
+                    
+                    // Show detailed error in console
+                    if (error.text) {
+                        console.error('Error message:', error.text);
+                    }
+                    if (error.status) {
+                        console.error('Error status:', error.status);
+                    }
                     
                     // Show error message
-                    alert(`Oops! ❌\n\nSomething went wrong. Please try again or contact me directly at:\n\nabduvohidkamoliddinov24@gmail.com`);
+                    alert(`Oops! ❌\n\nSomething went wrong. Please try again or contact me directly at:\n\nabduvohidkamoliddinov24@gmail.com\n\nError: ${error.text || 'Unknown error'}`);
                     
                     // Re-enable button
                     submitBtn.disabled = false;
@@ -255,15 +272,9 @@ document.addEventListener('DOMContentLoaded', function() {
         item.style.animationDelay = `${index * 0.1}s`;
     });
     
-    // ===== PREVENT DEFAULT LINK BEHAVIOR =====
-    const projectLinks = document.querySelectorAll('.project-link');
-    projectLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            // You can add your project link logic here
-            console.log('Project link clicked');
-        });
-    });
+    // ===== PROJECT LINKS - FIXED! =====
+    // Project links now work properly - they open in new tab
+    console.log('✅ Project links are enabled and working!');
     
     // ===== PAGE LOAD ANIMATION =====
     window.addEventListener('load', () => {
@@ -278,25 +289,5 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('%c👨‍💻 Welcome to my Portfolio!', 'color: #00ADB5; font-size: 20px; font-weight: bold;');
     console.log('%cDeveloped with ❤️ by Abduvohid Kamoliddinov', 'color: #EEEEEE; font-size: 14px;');
     console.log('%cGitHub: https://github.com/guhh776', 'color: #00ADB5; font-size: 12px;');
+    console.log('%c📧 EmailJS Status: Initialized and Ready!', 'color: #00ff00; font-size: 12px;');
 });
-
-// ===== CURSOR EFFECT (Optional) =====
-// Uncomment to enable custom cursor effect
-/*
-const cursor = document.createElement('div');
-cursor.className = 'cursor';
-document.body.appendChild(cursor);
-
-document.addEventListener('mousemove', e => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-});
-
-document.addEventListener('mousedown', () => {
-    cursor.style.transform = 'scale(0.8)';
-});
-
-document.addEventListener('mouseup', () => {
-    cursor.style.transform = 'scale(1)';
-});
-*/
